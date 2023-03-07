@@ -11,16 +11,16 @@ export class ProductsService {
     private readonly productsRepository: Repository<Product>,
   ) {}
 
-  create(createProductDto: CreateProductDto) {
+  async create(createProductDto: CreateProductDto) {
     const product = new Product();
     product.nome = createProductDto.nome;
     product.valor = createProductDto.valor;
     product.descrição = createProductDto.descrição;
 
-    return this.productsRepository.save(product);
+    return await this.productsRepository.save(product);
   }
 
-  async findAll() {
+  async findAll(): Promise<Product[]> {
     return this.productsRepository.find();
   }
 }
