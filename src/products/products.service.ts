@@ -12,6 +12,13 @@ export class ProductsService {
   ) {}
 
   async create(createProductDto: CreateProductDto) {
+    const productExists = await this.findOne(createProductDto.nome);
+
+    if (productExists) {
+      console.log('Produto já existe no banco => Descartar entrada');
+      return;
+    }
+
     const product = new Product();
     product.nome = createProductDto.nome;
     product.valor = createProductDto.valor;
@@ -22,5 +29,9 @@ export class ProductsService {
 
   async findAll(): Promise<Product[]> {
     return this.productsRepository.find();
+  }
+
+  async findOne(name: string): Promise<Product> {
+    return this.productsRepository.findOneBy({ nome: name });
   }
 }
