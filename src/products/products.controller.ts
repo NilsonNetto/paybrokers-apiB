@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -9,8 +9,11 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Get('products')
-  findAll(): Promise<Product[]> {
-    return this.productsService.findAll();
+  findAll(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ): Promise<Product[]> {
+    return this.productsService.findAll(page, limit);
   }
 
   @Get('products/:nome')

@@ -27,8 +27,19 @@ export class ProductsService {
     return await this.productsRepository.save(product);
   }
 
-  async findAll(): Promise<Product[]> {
-    return this.productsRepository.find();
+  async findAll(page = 1, limit = 10): Promise<Product[]> {
+    if (!page) {
+      page = 1;
+    }
+    if (!limit) {
+      limit = 10 * page;
+    } else {
+      limit = limit * page;
+    }
+    return this.productsRepository.find({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
   }
 
   async findOne(name: string): Promise<Product> {
