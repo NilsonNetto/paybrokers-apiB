@@ -11,7 +11,7 @@ export class ProductsService {
     private readonly productsRepository: Repository<Product>,
   ) {}
 
-  async create(createProductDto: CreateProductDto) {
+  async create(createProductDto: CreateProductDto): Promise<Product> {
     const productExists = await this.findOne(createProductDto.nome);
 
     if (productExists) {
@@ -28,14 +28,6 @@ export class ProductsService {
   }
 
   async findAll(page = 1, limit = 10): Promise<Product[]> {
-    if (!page) {
-      page = 1;
-    }
-    if (!limit) {
-      limit = 10 * page;
-    } else {
-      limit = limit * page;
-    }
     return this.productsRepository.find({
       skip: (page - 1) * limit,
       take: limit,
