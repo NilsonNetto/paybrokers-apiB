@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
-import { EventPattern, Payload } from '@nestjs/microservices';
+import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { Product } from './entities/product.entity';
@@ -22,7 +22,14 @@ export class ProductsController {
   }
 
   @EventPattern('createProduct')
-  create(@Payload() createProductDto: CreateProductDto) {
+  create(
+    @Payload() createProductDto: CreateProductDto,
+    @Ctx() context: RmqContext,
+  ) {
+    const channel = context.getChannelRef();
+    const originalMsg = context.getMessage();
+
+    channel.ack(originalMsg);
     return this.productsService.create(createProductDto);
   }
 }
