@@ -24,6 +24,9 @@ export class ProductsService {
     product.valor = createProductDto.valor;
     product.descrição = createProductDto.descrição;
 
+    for (let i = 0; i < 1500; i++) {}
+
+    console.log(product.nome);
     return await this.productsRepository.save(product);
   }
 
