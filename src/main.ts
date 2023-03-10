@@ -8,8 +8,8 @@ async function bootstrap() {
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
     options: {
-      urls: ['amqp://localhost:5672'],
-      queue: 'products',
+      urls: [process.env.RABBITMQ_URL],
+      queue: process.env.RABBITMQ_QUEUE,
       noAck: false,
       queueOptions: {
         durable: false,
