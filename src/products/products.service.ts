@@ -24,12 +24,6 @@ export class ProductsService {
     product.valor = createProductDto.valor;
     product.descrição = createProductDto.descrição;
 
-    for (let i = 0; i < 100000; i++) {
-      if (i === 99999) {
-        console.log(product.nome);
-      }
-    }
-
     return await this.productsRepository.save(product);
   }
 
